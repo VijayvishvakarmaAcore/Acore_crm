@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { getSummaryData } from '../../../utils/constants'; 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAdminDashboard } from "../../../redux/slices/adminDashboardSlice";
+
+
 
 const DashboardPage = ({ employees }) => {
-  const summary = getSummaryData(employees);
+  const dispatch = useDispatch();
+
+const { loading, overall, department, activity, weekly } =
+  useSelector(state => state.adminDashboard);
+
+useEffect(() => {
+  dispatch(fetchAdminDashboard());
+}, []);
+
+  // const summary = getSummaryData(employees);
+
+  const summary = {
+  totalEmployees: overall?.totalEmployees || 0
+};
+
   const [time, setTime] = useState(new Date());
   
   // Update time every minute
@@ -12,24 +30,30 @@ const DashboardPage = ({ employees }) => {
   }, []);
 
   // Graph data for department distribution
-  const departmentData = [
-    { name: 'Engineering', value: 4, color: '#3b82f6' },
-    { name: 'Design', value: 1, color: '#10b981' },
-    { name: 'Quality', value: 1, color: '#f59e0b' },
-    { name: 'Management', value: 1, color: '#ef4444' },
-    { name: 'HR', value: 1, color: '#8b5cf6' }
-  ];
+const departmentData = department?.map(item => ({
+  name: item.department,
+  value: item.totalEmployees,
+  color: "#3b82f6"
+}));
+
 
   // Weekly hours data for graph
-  const weeklyHoursData = [
-    { day: 'Mon', hours: 42, target: 40 },
-    { day: 'Tue', hours: 38, target: 40 },
-    { day: 'Wed', hours: 45, target: 40 },
-    { day: 'Thu', hours: 41, target: 40 },
-    { day: 'Fri', hours: 39, target: 40 },
-    { day: 'Sat', hours: 22, target: 20 },
-    { day: 'Sun', hours: 0, target: 0 }
-  ];
+  // const weeklyHoursData = [
+  //   { day: 'Mon', hours: 42, target: 40 },
+  //   { day: 'Tue', hours: 38, target: 40 },
+  //   { day: 'Wed', hours: 45, target: 40 },
+  //   { day: 'Thu', hours: 41, target: 40 },
+  //   { day: 'Fri', hours: 39, target: 40 },
+  //   { day: 'Sat', hours: 22, target: 20 },
+  //   { day: 'Sun', hours: 0, target: 0 }
+  // ];
+
+
+  const weeklyHoursData = weekly?.data?.map(d => ({
+  day: d.day,
+  hours: d.actualHours,
+  target: d.targetHours
+})) || [];
 
   const maxHours = Math.max(...weeklyHoursData.map(d => Math.max(d.hours, d.target))) + 5;
 
@@ -51,31 +75,31 @@ const DashboardPage = ({ employees }) => {
         <div className="card">
           <div className="card-icon">👥</div>
           <h3>Total Employees</h3>
-          <p className="card-value">{summary.totalEmployees}</p>
+          <p className="card-value">{overall?.totalEmployees}</p>
           <p className="card-trend">↗️ 12% from last month</p>
         </div>
-        <div className="">
+        <div className="card">
           <div className="card-icon">✅</div>
           <h3>Active Now</h3>
-          <p className="card-value">{summary.activeNow}</p>
+          <p className="card-value">{overall?.activeNow}</p>
           <p className="card-trend">🟢 All systems operational</p>
         </div>
         <div className="card card-warning">
           <div className="card-icon">🏖️</div>
           <h3>On Leave</h3>
-          <p className="card-value">{summary.onLeave}</p>
+          <p className="card-value">{overall?.onLeave}</p>
           <p className="card-trend">🟡 Normal leave pattern</p>
         </div>
         <div className="card card-info">
           <div className="card-icon">⏱️</div>
           <h3>Avg Hours/Day</h3>
-          <p className="card-value">{summary.avgHours}h</p>
+          <p className="card-value">{overall?.avgHoursPerDay}h</p>
           <p className="card-trend">↗️ 0.5h from yesterday</p>
         </div>
         <div className="card card-primary">
           <div className="card-icon">📈</div>
           <h3>Total Hours Today</h3>
-          <p className="card-value">{summary.totalHoursToday}h</p>
+          <p className="card-value">{overall?.totalHoursToday}h</p>
           <p className="card-trend">📊 92% of target achieved</p>
         </div>
       </div>
@@ -83,7 +107,7 @@ const DashboardPage = ({ employees }) => {
       {/* Charts Section */}
       <div className="charts-section">
         {/* Department Distribution Chart */}
-        <div className="chart-box">
+        <div className="">
           <div className="chart-header">
             <h3>📊 Department-wise Distribution</h3>
             <span className="chart-subtitle">Employee count by department</span>
@@ -94,16 +118,26 @@ const DashboardPage = ({ employees }) => {
                 <div className="dept-bar-container">
                   <div 
                     className="dept-bar" 
-                    style={{
-                      width: `${(dept.value / Math.max(...departmentData.map(d => d.value))) * 80}%`,
-                      background: dept.color
-                    }}
+                   style={{
+  width: `${
+    departmentData.length
+      ? (dept.value / Math.max(...departmentData.map(d => d.value))) * 80
+      : 0
+  }%`,
+  background: dept.color
+}}
+
                   ></div>
                   <div className="dept-value">{dept.value}</div>
                 </div>
                 <span className="dept-name">{dept.name}</span>
                 <span className="dept-percentage">
-                  {Math.round((dept.value / summary.totalEmployees) * 100)}%
+                  {/* {Math.round((dept.value / summary.totalEmployees) * 100)}% */}
+                  {overall?.totalEmployees
+                  ? Math.round((dept.value / overall.totalEmployees) * 100)
+                    : 0
+                  }%
+
                 </span>
               </div>
             ))}
@@ -111,7 +145,7 @@ const DashboardPage = ({ employees }) => {
         </div>
 
         {/* Weekly Hours Graph */}
-        <div className="chart-box">
+        <div className="">
           <div className="chart-header">
             <h3>📈 Weekly Hours Analysis</h3>
             <span className="chart-subtitle">Actual vs Target hours this week</span>
@@ -167,7 +201,7 @@ const DashboardPage = ({ employees }) => {
 
       {/* Activity Status Cards */}
       <div className="charts-section">
-        <div className="chart-box">
+        {/* <div className="chart-box">
           <h3>🎯 Today's Activity Status</h3>
           <div className="activity-stats">
             <div className="activity-item">
@@ -195,10 +229,10 @@ const DashboardPage = ({ employees }) => {
               <span className="activity-percentage">7%</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Productivity Meter */}
-        <div className="chart-box">
+        {/* <div className="">
           <h3>⚡ Overall Productivity</h3>
           <div className="productivity-meter">
             <div className="meter-container">
@@ -231,7 +265,7 @@ const DashboardPage = ({ employees }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Recent Activity */}
@@ -268,7 +302,7 @@ const DashboardPage = ({ employees }) => {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .page-subtitle {
           color: #94a3b8;
           font-size: 14px;

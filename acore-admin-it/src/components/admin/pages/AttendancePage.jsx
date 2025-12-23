@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+
 const AttendancePage = ({ attendance, employees }) => {
   const [selectedDate, setSelectedDate] = useState('2024-12-13');
   const [viewType, setViewType] = useState('daily'); // daily, weekly, monthly
@@ -216,7 +217,7 @@ const AttendancePage = ({ attendance, employees }) => {
               </div>
             </div>
 
-            <div className="chart-box">
+            {/* <div className="chart-box">
               <h3>🏢 Department-wise Attendance</h3>
               <div className="dept-attendance">
                 {departmentAttendance.map((dept, index) => (
@@ -239,7 +240,7 @@ const AttendancePage = ({ attendance, employees }) => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Attendance Table */}
@@ -259,12 +260,12 @@ const AttendancePage = ({ attendance, employees }) => {
                   <option value="Quality">Quality</option>
                   <option value="HR">HR</option>
                 </select>
-                <button className="btn-primary" onClick={() => alert('Exporting attendance data...')}>
+                {/* <button className="btn-primary" onClick={() => alert('Exporting attendance data...')}>
                   📥 Export
                 </button>
                 <button className="btn-icon" onClick={() => alert('Sending reminders...')}>
                   🔔 Send Reminders
-                </button>
+                </button> */}
               </div>
             </div>
             <table>

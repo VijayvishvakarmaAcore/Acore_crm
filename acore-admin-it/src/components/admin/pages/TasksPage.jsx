@@ -488,14 +488,14 @@ const TasksPage = ({ employeesData, currentUser }) => {
           <span className="results-count">
             Showing {filteredTasks.length} of {tasks.length} tasks
           </span>
-          <button 
+          {/* <button 
             className="export-csv-btn"
             onClick={handleExportCSV}
             title="Export to CSV"
           >
             <span className="export-icon">📊</span>
             Export CSV
-          </button>
+          </button> */}
         </div>
 
         {/* Tasks Table/Grid */}

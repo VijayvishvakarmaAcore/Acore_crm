@@ -105,7 +105,7 @@ const LiveTrackingPage = ({ trackingData }) => {
           <p className="card-value">{totalTracked}</p>
           <p className="card-trend">Active sessions</p>
         </div>
-        <div className="">
+        <div className="card">
           <div className="card-icon">✅</div>
           <h3>Productive</h3>
           <p className="card-value">{productiveCount}</p>

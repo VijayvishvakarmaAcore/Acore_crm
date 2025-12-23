@@ -19,6 +19,19 @@ import
 } from '../../utils/constants';
 import './AdminDashboard.css';
 import TasksPage from './pages/TasksPage';
+import UserManagementPage from './pages/UserManagementPage';
+import AnnouncementsPage from './pages/AnnouncementsPage';
+import HolidaysPage from "./pages/HolidaysPage";
+import LeavesPage from "./pages/LeavesPage";
+import SalaryAdminPage from "./pages/SalaryAdminPage";
+import CelebrationAdminPage from "./pages/CelebrationAdminPage";
+import AdminRegisterEmployee from "./pages/AdminRegisterEmployee";
+
+
+
+
+
+
 
 
 // App.js में initial employees data
@@ -81,6 +94,31 @@ const AdminDashboard = ({ userRole, onLogout }) => {
         return <ProjectsPage />;
         case 'tasks':
           return <TasksPage/>
+      case 'announcements':
+         return <AnnouncementsPage />;
+
+        case "holidays":
+          return <HolidaysPage />;
+
+          case 'leaves':
+  return <LeavesPage />;
+  case "salary":
+  return <SalaryAdminPage />;
+  case "celebration":
+  return <CelebrationAdminPage />;
+  case "employee-register":
+ return <AdminRegisterEmployee />;
+
+
+
+
+  
+
+
+
+
+           case 'user-management':
+        return <UserManagementPage />;
       case 'reports-weekly':
         return <ReportsPage reportType="weekly" reportData={WEEKLY_REPORT} />;
       case 'reports-monthly':

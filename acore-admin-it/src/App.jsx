@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Login from './components/auth/Login';
+
 import AdminDashboard from './components/admin/AdminDashboard';
 
+import Login from "./components/auth/Login"
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);

@@ -762,6 +762,84 @@
 
 
 
+// import React, { useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { loginAdmin } from "../../redux/slices/adminAuthSlice";
+
+// import "./Login.css";
+
+// const Login = () => {
+//   const dispatch = useDispatch();
+
+//   const { loading } = useSelector((state) => state.adminAuth || {});
+
+//   const [form, setForm] = useState({ email: "", password: "" });
+//   const [msg, setMsg] = useState("");
+
+//   const handleChange = (e) => {
+//     setMsg("");
+//     setForm({ ...form, [e.target.name]: e.target.value });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     if (!form.email || !form.password) {
+//       setMsg("Please enter email & password");
+//       return;
+//     }
+
+//     try {
+//       const res = await dispatch(loginAdmin(form)).unwrap();
+
+//       localStorage.setItem(
+//         "adminUser",
+//         JSON.stringify(res?.data?.user || {})
+//       );
+
+//       window.location.href = "/";
+//     } catch (err) {
+//       setMsg(err || "Login failed!");
+//     }
+//   };
+
+//   return (
+//     <div className="auth-container">
+//       <div className="auth-box">
+//         <h2>Admin Login</h2>
+
+//         {msg && <div className="auth-error">{msg}</div>}
+
+//         <form onSubmit={handleSubmit}>
+//           <input
+//             type="email"
+//             name="email"
+//             placeholder="Admin Email"
+//             value={form.email}
+//             onChange={handleChange}
+//           />
+
+//           <input
+//             type="password"
+//             name="password"
+//             placeholder="Password"
+//             value={form.password}
+//             onChange={handleChange}
+//           />
+
+//           <button disabled={loading}>
+//             {loading ? "Logging in..." : "Login"}
+//           </button>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Login;
+
+
+
 
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -769,47 +847,147 @@ import { loginAdmin } from "../../redux/slices/adminAuthSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, error, success } = useSelector(
-    (state) => state.adminAuth
-  );
+  const { loading } = useSelector((state) => state.adminAuth || {});
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [msg, setMsg] = useState("");
 
-  const handleSubmit = (e) => {
+  const styles = {
+    wrapper: {
+      width: "100vw",
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background:
+        "linear-gradient(135deg, #1f2937, #111827, #0f172a)",
+      fontFamily: "'Poppins', sans-serif",
+    },
+
+    card: {
+      width: "380px",
+      padding: "35px",
+      borderRadius: "18px",
+      background: "rgba(255,255,255,0.08)",
+      border: "1px solid rgba(255,255,255,0.25)",
+      boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
+      backdropFilter: "blur(12px)",
+      color: "white",
+      textAlign: "center",
+      transition: "0.3s",
+    },
+
+    heading: {
+      fontSize: "26px",
+      marginBottom: "10px",
+      fontWeight: "bold",
+    },
+
+    subText: {
+      fontSize: "14px",
+      opacity: 0.8,
+      marginBottom: "20px",
+    },
+
+    errorBox: {
+      background: "rgba(255,0,0,0.15)",
+      border: "1px solid red",
+      padding: "10px",
+      borderRadius: "6px",
+      marginBottom: "15px",
+      color: "#ff6b6b",
+      fontSize: "13px",
+    },
+
+    input: {
+      width: "100%",
+      padding: "12px",
+      marginBottom: "14px",
+      borderRadius: "10px",
+      border: "1px solid rgba(255,255,255,0.4)",
+      background: "rgba(255,255,255,0.12)",
+      outline: "none",
+      color: "white",
+      fontSize: "14px",
+      transition: "0.3s",
+    },
+
+    button: {
+      width: "100%",
+      padding: "12px",
+      borderRadius: "10px",
+      border: "none",
+      background:
+        "linear-gradient(135deg, #3b82f6, #2563eb, #1d4ed8)",
+      color: "white",
+      fontSize: "16px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      transition: "0.3s",
+    },
+  };
+
+  const handleChange = (e) => {
+    setMsg("");
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(loginAdmin({ email, password }));
+    if (!form.email || !form.password) {
+      setMsg("Please enter email & password");
+      return;
+    }
+
+    try {
+      const res = await dispatch(loginAdmin(form)).unwrap();
+
+      localStorage.setItem(
+        "adminUser",
+        JSON.stringify(res?.data?.user || {})
+      );
+
+      window.location.href = "/";
+    } catch (err) {
+      setMsg(err || "Login failed!");
+    }
   };
 
   return (
-    <div className="login-container">
-      <h2>Admin Login</h2>
+    <div style={styles.wrapper}>
+      <div style={styles.card}>
+        <h2 style={styles.heading}>🔐 Admin Login</h2>
+        <p style={styles.subText}>
+          Secure access for Admin & HR Dashboard
+        </p>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>Login Success 🎉</p>}
+        {msg && <div style={styles.errorBox}>{msg}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Admin Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <form onSubmit={handleSubmit}>
+          <input
+            style={styles.input}
+            type="email"
+            name="email"
+            placeholder="Enter Admin Email"
+            value={form.email}
+            onChange={handleChange}
+          />
 
-        <input
-          type="password"
-          placeholder="Admin Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+          <input
+            style={styles.input}
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            value={form.password}
+            onChange={handleChange}
+          />
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+          <button style={styles.button} disabled={loading}>
+            {loading ? "Logging in..." : "Login Now"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

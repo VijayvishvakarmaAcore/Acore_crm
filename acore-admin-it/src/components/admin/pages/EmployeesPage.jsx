@@ -1514,103 +1514,395 @@
 
 
 
-import React, { useState } from "react";
+// import React, { useState } from "react";
+
+// const EmployeesPage = () => {
+
+//   const [employees, setEmployees] = useState([
+//     {
+//       id: 1,
+//       name: "John Doe",
+//       empId: "EMP001",
+//       department: "Engineering",
+//       role: "Software Developer",
+//       email: "john@acore.com",
+//       phone: "9876543210",
+//       status: "Active",
+//       joinDate: "2023-01-15"
+//     },
+//     {
+//       id: 2,
+//       name: "Jane Smith",
+//       empId: "EMP002",
+//       department: "Design",
+//       role: "UI/UX Designer",
+//       email: "jane@acore.com",
+//       phone: "9876543211",
+//       status: "Inactive",
+//       joinDate: "2023-03-12"
+//     }
+//   ]);
+
+//   const [search, setSearch] = useState("");
+//   const [filterDept, setFilterDept] = useState("All");
+
+//   const [showModal, setShowModal] = useState(false);
+//   const [editing, setEditing] = useState(null);
+
+//   const [form, setForm] = useState({
+//     name: "",
+//     empId: "",
+//     department: "",
+//     role: "",
+//     email: "",
+//     phone: "",
+//     status: "Active",
+//   });
+
+//   const openAdd = () => {
+//     setEditing(null);
+//     setForm({
+//       name: "",
+//       empId: "",
+//       department: "",
+//       role: "",
+//       email: "",
+//       phone: "",
+//       status: "Active",
+//     });
+//     setShowModal(true);
+//   };
+
+//   const openEdit = (emp) => {
+//     setEditing(emp);
+//     setForm(emp);
+//     setShowModal(true);
+//   };
+
+//   const saveEmployee = () => {
+//     if (!form.name.trim()) return alert("Name Required");
+//     if (!form.empId.trim()) return alert("Employee ID Required");
+
+//     if (editing) {
+//       setEmployees(employees.map(e => e.id === editing.id ? form : e));
+//     } else {
+//       setEmployees([{ ...form, id: Date.now() }, ...employees]);
+//     }
+
+//     setShowModal(false);
+//   };
+
+//   const toggleStatus = (id) => {
+//     setEmployees(
+//       employees.map(e =>
+//         e.id === id
+//           ? { ...e, status: e.status === "Active" ? "Inactive" : "Active" }
+//           : e
+//       )
+//     );
+//   };
+
+//   const deleteEmployee = (id) => {
+//     if (window.confirm("Delete Employee?")) {
+//       setEmployees(employees.filter(e => e.id !== id));
+//     }
+//   };
+
+//   const filtered = employees
+//     .filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
+//     .filter(e => filterDept === "All" ? true : e.department === filterDept);
+
+//   return (
+//     <div style={{ color: "white" }}>
+
+//       {/* HEADER PREMIUM */}
+//       <div style={{
+//         background: "linear-gradient(120deg,#0f172a,#1d4ed8,#3b82f6)",
+//         padding: "22px",
+//         borderRadius: "14px",
+//         display: "flex",
+//         justifyContent: "space-between",
+//         alignItems: "center",
+//         flexWrap:"wrap",
+//         boxShadow:"0 20px 40px rgba(0,0,0,.6)",
+//         border:"1px solid #1e293b"
+//       }}>
+
+//         <div>
+//           <h2 style={{ margin: 0 }}>👨‍💼 Employees Management</h2>
+//           <p style={{ margin: 0, color: "#d1d5db" }}>
+//             Manage all company employees professionally
+//           </p>
+//         </div>
+
+//         <button
+//           style={{
+//             background: "#22c55e",
+//             border: 0,
+//             padding: "12px 18px",
+//             borderRadius: "10px",
+//             cursor: "pointer",
+//             fontWeight: "bold",
+//             fontSize: "14px"
+//           }}
+//           onClick={openAdd}
+//         >
+//           ➕ Add Employee
+//         </button>
+//       </div>
+
+//       {/* STATS */}
+//       <div style={{
+//         display:"grid",
+//         gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",
+//         gap:"16px",
+//         marginTop:"18px"
+//       }}>
+//         <Stat title="Total Employees" icon="👥" value={employees.length} color="#6366f1" />
+//         <Stat title="Active Employees" icon="🟢" value={employees.filter(e=>e.status==="Active").length} color="#10b981" />
+//         <Stat title="Inactive Employees" icon="🔴" value={employees.filter(e=>e.status==="Inactive").length} color="#ef4444" />
+//       </div>
+
+//       {/* FILTER BAR */}
+//       <div style={{
+//         marginTop:"14px",
+//         background:"#020617",
+//         padding:"12px",
+//         borderRadius:"10px",
+//         border:"1px solid #374151",
+//         display:"flex",
+//         gap:"10px",
+//         flexWrap:"wrap"
+//       }}>
+//         <input
+//           placeholder="Search employee..."
+//           style={input}
+//           value={search}
+//           onChange={(e)=>setSearch(e.target.value)}
+//         />
+
+//         <select
+//           style={input}
+//           value={filterDept}
+//           onChange={(e)=>setFilterDept(e.target.value)}
+//         >
+//           <option>All</option>
+//           <option>Engineering</option>
+//           <option>Design</option>
+//           <option>HR</option>
+//           <option>Management</option>
+//         </select>
+//       </div>
+
+//       {/* TABLE */}
+//       <div style={{ width:"100%", overflowX:"auto" }}>
+//         <table style={{
+//           width:"100%",
+//           marginTop:"10px",
+//           borderCollapse:"collapse",
+//           minWidth:"900px"
+//         }}>
+//           <thead>
+//             <tr>
+//               <Th>Name</Th>
+//               <Th>Emp ID</Th>
+//               <Th>Department</Th>
+//               <Th>Role</Th>
+//               <Th>Email</Th>
+//               <Th>Status</Th>
+//               <Th>Actions</Th>
+//             </tr>
+//           </thead>
+
+//           <tbody>
+//             {filtered.map(e => (
+//               <tr key={e.id}>
+//                 <TdWhite>{e.name}</TdWhite>
+//                 <Td>{e.empId}</Td>
+//                 <Td>{e.department}</Td>
+//                 <Td>{e.role}</Td>
+//                 <Td>{e.email}</Td>
+
+//                 <Td>
+//                   <span style={{
+//                     padding:"6px 10px",
+//                     borderRadius:"8px",
+//                     fontSize:"11px",
+//                     background: e.status === "Active" ? "#064e3b" : "#4c0519",
+//                     color: e.status === "Active" ? "#6ee7b7" : "#fda4af"
+//                   }}>
+//                     {e.status}
+//                   </span>
+//                 </Td>
+
+//                 <Td>
+//                   <button style={btnBlue} onClick={()=>toggleStatus(e.id)}>🔄</button>
+//                   <button style={btnYellow} onClick={()=>openEdit(e)}>✏️</button>
+//                   <button style={btnRed} onClick={()=>deleteEmployee(e.id)}>🗑</button>
+//                 </Td>
+//               </tr>
+//             ))}
+
+//             {filtered.length === 0 && (
+//               <tr>
+//                 <td colSpan="7" style={{ textAlign:"center", padding:"20px" }}>
+//                   ❌ No Employees Found
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       {/* MODAL */}
+//       {showModal && (
+//         <div style={overlay}>
+//           <div style={modal}>
+//             <h3>{editing ? "✏️ Edit Employee" : "➕ Add Employee"}</h3>
+
+//             <input style={input} placeholder="Name"
+//               value={form.name}
+//               onChange={(e)=>setForm({...form,name:e.target.value})}
+//             />
+
+//             <input style={input} placeholder="Employee ID"
+//               value={form.empId}
+//               onChange={(e)=>setForm({...form,empId:e.target.value})}
+//             />
+
+//             <input style={input} placeholder="Department"
+//               value={form.department}
+//               onChange={(e)=>setForm({...form,department:e.target.value})}
+//             />
+
+//             <input style={input} placeholder="Role"
+//               value={form.role}
+//               onChange={(e)=>setForm({...form,role:e.target.value})}
+//             />
+
+//             <input style={input} placeholder="Email"
+//               value={form.email}
+//               onChange={(e)=>setForm({...form,email:e.target.value})}
+//             />
+
+//             <input style={input} placeholder="Phone"
+//               value={form.phone}
+//               onChange={(e)=>setForm({...form,phone:e.target.value})}
+//             />
+
+//             <div style={{ display:"flex", justifyContent:"space-between", marginTop:"10px" }}>
+//               <button style={btnGreenBig} onClick={saveEmployee}>💾 Save</button>
+//               <button style={btnRedBig} onClick={()=>setShowModal(false)}>❌ Cancel</button>
+//             </div>
+
+//           </div>
+//         </div>
+//       )}
+
+//     </div>
+//   );
+// };
+
+// const Stat = ({icon,title,value,color}) => (
+//   <div style={{
+//     background:"#020617",
+//     border:"1px solid #374151",
+//     borderRadius:"12px",
+//     padding:"18px",
+//     display:"flex",
+//     justifyContent:"space-between",
+//     alignItems:"center"
+//   }}>
+//     <div>
+//       <h3 style={{ margin:0, color:"#9ca3af" }}>{title}</h3>
+//       <p style={{ margin:0, fontSize:"28px", fontWeight:"bold" }}>{value}</p>
+//     </div>
+//     <span style={{
+//       fontSize:"32px",
+//       padding:"8px 12px",
+//       borderRadius:"10px",
+//       background:"#111827",
+//       border:`1px solid ${color}`
+//     }}>
+//       {icon}
+//     </span>
+//   </div>
+// );
+
+// const Th = ({children}) => (
+//   <th style={{
+//     textAlign:"left",
+//     padding:"10px",
+//     background:"#020617",
+//     borderBottom:"1px solid #374151",
+//     color:"#9ca3af"
+//   }}>{children}</th>
+// );
+
+// const Td = ({children}) => (
+//   <td style={{
+//     padding:"12px",
+//     borderBottom:"1px solid #374151"
+//   }}>{children}</td>
+// );
+
+// const TdWhite = ({children}) => <Td><span style={{ color:"white" }}>{children}</span></Td>;
+
+// const input = {
+//   background:"#020617",
+//   color:"white",
+//   border:"1px solid #374151",
+//   padding:"10px",
+//   borderRadius:"6px",
+//   width:"100%"
+// };
+
+// const btnBlue = { background:"#2563eb", border:0, padding:"6px 8px", marginRight:"6px", borderRadius:"6px", cursor:"pointer" };
+// const btnYellow = { background:"#f59e0b", border:0, padding:"6px 8px", marginRight:"6px", borderRadius:"6px", cursor:"pointer" };
+// const btnRed = { background:"#ef4444", border:0, padding:"6px 8px", borderRadius:"6px", cursor:"pointer" };
+// const btnGreenBig = { background:"#22c55e", padding:"10px 14px", borderRadius:"8px", border:"none", cursor:"pointer" };
+// const btnRedBig = { background:"#ef4444", padding:"10px 14px", borderRadius:"8px", border:"none", cursor:"pointer" };
+
+// const overlay = { position:"fixed", inset:0, background:"#000000ca", display:"flex", justifyContent:"center", alignItems:"center" };
+// const modal = { width:"500px", background:"#0f172a", border:"1px solid #374151", padding:"16px", borderRadius:"14px" };
+
+// export default EmployeesPage;
+
+
+
+
+
+
+
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchEmployees } from "../../../redux/slices/adminEmployeesSlice";
 
 const EmployeesPage = () => {
 
-  const [employees, setEmployees] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      empId: "EMP001",
-      department: "Engineering",
-      role: "Software Developer",
-      email: "john@acore.com",
-      phone: "9876543210",
-      status: "Active",
-      joinDate: "2023-01-15"
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      empId: "EMP002",
-      department: "Design",
-      role: "UI/UX Designer",
-      email: "jane@acore.com",
-      phone: "9876543211",
-      status: "Inactive",
-      joinDate: "2023-03-12"
-    }
-  ]);
+  const dispatch = useDispatch();
+  
+  const { employees, loading, error } = useSelector(
+    (state) => state.adminEmployees
+  );
 
   const [search, setSearch] = useState("");
   const [filterDept, setFilterDept] = useState("All");
 
-  const [showModal, setShowModal] = useState(false);
-  const [editing, setEditing] = useState(null);
-
-  const [form, setForm] = useState({
-    name: "",
-    empId: "",
-    department: "",
-    role: "",
-    email: "",
-    phone: "",
-    status: "Active",
-  });
-
-  const openAdd = () => {
-    setEditing(null);
-    setForm({
-      name: "",
-      empId: "",
-      department: "",
-      role: "",
-      email: "",
-      phone: "",
-      status: "Active",
-    });
-    setShowModal(true);
-  };
-
-  const openEdit = (emp) => {
-    setEditing(emp);
-    setForm(emp);
-    setShowModal(true);
-  };
-
-  const saveEmployee = () => {
-    if (!form.name.trim()) return alert("Name Required");
-    if (!form.empId.trim()) return alert("Employee ID Required");
-
-    if (editing) {
-      setEmployees(employees.map(e => e.id === editing.id ? form : e));
-    } else {
-      setEmployees([{ ...form, id: Date.now() }, ...employees]);
-    }
-
-    setShowModal(false);
-  };
-
-  const toggleStatus = (id) => {
-    setEmployees(
-      employees.map(e =>
-        e.id === id
-          ? { ...e, status: e.status === "Active" ? "Inactive" : "Active" }
-          : e
-      )
-    );
-  };
-
-  const deleteEmployee = (id) => {
-    if (window.confirm("Delete Employee?")) {
-      setEmployees(employees.filter(e => e.id !== id));
-    }
-  };
+  useEffect(() => {
+    dispatch(fetchEmployees());
+  }, [dispatch]);
 
   const filtered = employees
-    .filter(e => e.name.toLowerCase().includes(search.toLowerCase()))
-    .filter(e => filterDept === "All" ? true : e.department === filterDept);
+    ?.filter(e =>
+      e.name?.toLowerCase().includes(search.toLowerCase())
+    )
+    ?.filter(e =>
+      filterDept === "All" ? true : e.department === filterDept
+    );
+
+  if (loading) return <h2 style={{ color: "white" }}>Loading Employees...</h2>;
+  if (error) return <h2 style={{ color: "red" }}>{error}</h2>;
 
   return (
     <div style={{ color: "white" }}>
@@ -1635,20 +1927,6 @@ const EmployeesPage = () => {
           </p>
         </div>
 
-        <button
-          style={{
-            background: "#22c55e",
-            border: 0,
-            padding: "12px 18px",
-            borderRadius: "10px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            fontSize: "14px"
-          }}
-          onClick={openAdd}
-        >
-          ➕ Add Employee
-        </button>
       </div>
 
       {/* STATS */}
@@ -1659,8 +1937,6 @@ const EmployeesPage = () => {
         marginTop:"18px"
       }}>
         <Stat title="Total Employees" icon="👥" value={employees.length} color="#6366f1" />
-        <Stat title="Active Employees" icon="🟢" value={employees.filter(e=>e.status==="Active").length} color="#10b981" />
-        <Stat title="Inactive Employees" icon="🔴" value={employees.filter(e=>e.status==="Inactive").length} color="#ef4444" />
       </div>
 
       {/* FILTER BAR */}
@@ -1709,43 +1985,25 @@ const EmployeesPage = () => {
               <Th>Department</Th>
               <Th>Role</Th>
               <Th>Email</Th>
-              <Th>Status</Th>
-              <Th>Actions</Th>
+              <Th>Join Date</Th>
             </tr>
           </thead>
 
           <tbody>
             {filtered.map(e => (
-              <tr key={e.id}>
+              <tr key={e.employeeId}>
                 <TdWhite>{e.name}</TdWhite>
-                <Td>{e.empId}</Td>
+                <Td>{e.employeeId}</Td>
                 <Td>{e.department}</Td>
-                <Td>{e.role}</Td>
+                <Td>{e.designation}</Td>
                 <Td>{e.email}</Td>
-
-                <Td>
-                  <span style={{
-                    padding:"6px 10px",
-                    borderRadius:"8px",
-                    fontSize:"11px",
-                    background: e.status === "Active" ? "#064e3b" : "#4c0519",
-                    color: e.status === "Active" ? "#6ee7b7" : "#fda4af"
-                  }}>
-                    {e.status}
-                  </span>
-                </Td>
-
-                <Td>
-                  <button style={btnBlue} onClick={()=>toggleStatus(e.id)}>🔄</button>
-                  <button style={btnYellow} onClick={()=>openEdit(e)}>✏️</button>
-                  <button style={btnRed} onClick={()=>deleteEmployee(e.id)}>🗑</button>
-                </Td>
+                <Td>{new Date(e.dateOfJoining).toLocaleDateString()}</Td>
               </tr>
             ))}
 
             {filtered.length === 0 && (
               <tr>
-                <td colSpan="7" style={{ textAlign:"center", padding:"20px" }}>
+                <td colSpan="6" style={{ textAlign:"center", padding:"20px" }}>
                   ❌ No Employees Found
                 </td>
               </tr>
@@ -1753,51 +2011,6 @@ const EmployeesPage = () => {
           </tbody>
         </table>
       </div>
-
-      {/* MODAL */}
-      {showModal && (
-        <div style={overlay}>
-          <div style={modal}>
-            <h3>{editing ? "✏️ Edit Employee" : "➕ Add Employee"}</h3>
-
-            <input style={input} placeholder="Name"
-              value={form.name}
-              onChange={(e)=>setForm({...form,name:e.target.value})}
-            />
-
-            <input style={input} placeholder="Employee ID"
-              value={form.empId}
-              onChange={(e)=>setForm({...form,empId:e.target.value})}
-            />
-
-            <input style={input} placeholder="Department"
-              value={form.department}
-              onChange={(e)=>setForm({...form,department:e.target.value})}
-            />
-
-            <input style={input} placeholder="Role"
-              value={form.role}
-              onChange={(e)=>setForm({...form,role:e.target.value})}
-            />
-
-            <input style={input} placeholder="Email"
-              value={form.email}
-              onChange={(e)=>setForm({...form,email:e.target.value})}
-            />
-
-            <input style={input} placeholder="Phone"
-              value={form.phone}
-              onChange={(e)=>setForm({...form,phone:e.target.value})}
-            />
-
-            <div style={{ display:"flex", justifyContent:"space-between", marginTop:"10px" }}>
-              <button style={btnGreenBig} onClick={saveEmployee}>💾 Save</button>
-              <button style={btnRedBig} onClick={()=>setShowModal(false)}>❌ Cancel</button>
-            </div>
-
-          </div>
-        </div>
-      )}
 
     </div>
   );
@@ -1856,14 +2069,5 @@ const input = {
   borderRadius:"6px",
   width:"100%"
 };
-
-const btnBlue = { background:"#2563eb", border:0, padding:"6px 8px", marginRight:"6px", borderRadius:"6px", cursor:"pointer" };
-const btnYellow = { background:"#f59e0b", border:0, padding:"6px 8px", marginRight:"6px", borderRadius:"6px", cursor:"pointer" };
-const btnRed = { background:"#ef4444", border:0, padding:"6px 8px", borderRadius:"6px", cursor:"pointer" };
-const btnGreenBig = { background:"#22c55e", padding:"10px 14px", borderRadius:"8px", border:"none", cursor:"pointer" };
-const btnRedBig = { background:"#ef4444", padding:"10px 14px", borderRadius:"8px", border:"none", cursor:"pointer" };
-
-const overlay = { position:"fixed", inset:0, background:"#000000ca", display:"flex", justifyContent:"center", alignItems:"center" };
-const modal = { width:"500px", background:"#0f172a", border:"1px solid #374151", padding:"16px", borderRadius:"14px" };
 
 export default EmployeesPage;

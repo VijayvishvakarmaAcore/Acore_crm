@@ -13,6 +13,11 @@ import attendanceAdminReducer from "./slices/attendanceAdminSlice";
 import holidaysReducer from "./slices/holidaysSlice";
 import adminDashboardReducer from "./slices/adminDashboardSlice";
 import adminAuthReducer from "./slices/adminAuthSlice";
+import adminEmployeesReducer from "./slices/adminEmployeesSlice";
+import adminAttendanceReducer from "./slices/adminAttendanceSlice";
+import projectsReducer from "./slices/projectsSlice";
+import tasksReducer from "./slices/tasksSlice";
+
 
 const store = configureStore({
   reducer: {
@@ -20,6 +25,10 @@ const store = configureStore({
     holidays: holidaysReducer,
     adminDashboard: adminDashboardReducer,
     adminAuth: adminAuthReducer,
+    adminEmployees: adminEmployeesReducer,
+    adminAttendance: adminAttendanceReducer,
+    projects: projectsReducer,
+    tasks: tasksReducer,
   },
 });
 
